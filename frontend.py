@@ -17,6 +17,6 @@ query=st.text_input("Enter your question: ")
 if query and st.button('Get Answer'):
     response=requests.post(f'{BACKEND_URL}/query',json={'query':query})
     if response.status_code==200:
-        data=response.json()
+        data=response.json()['answer']
         st.write("Answer:")
-        st.write(data['answer'])
+        st.write(data)

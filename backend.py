@@ -58,6 +58,6 @@ def query_documents(request:QueryRequest):
 
     document_chain=create_stuff_documents_chain(llm=llm, prompt=prompt)
     retriever=vector_store.as_retriever()
-    retriever_chain=create_retrieval_chain(retriever=retriever, combine_documents_chain=document_chain)
+    retriever_chain=create_retrieval_chain(retriever, document_chain)
     response=retriever_chain.invoke({'input': request.query})
     return {'answer': response['answer']}
