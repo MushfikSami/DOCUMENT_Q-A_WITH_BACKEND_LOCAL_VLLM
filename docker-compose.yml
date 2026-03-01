@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: .
+    volumes:
+      - ./us_census:/app/us_census
+    ports:
+      - "8000:8000"
+    command: uvicorn backend:app --host 0.0.0.0 --port 8000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  frontend:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    command: streamlit run frontend.py --server.address 0.0.0.0
+    depends_on:
+      - backend
