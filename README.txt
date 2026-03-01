@@ -1,11 +1,57 @@
-🤖 Private-RAG: Local Document IntelligenceFastAPI + Streamlit + Qwen3-30B + DockerThis project is a high-performance, locally-hosted Retrieval-Augmented Generation (RAG) pipeline. It allows you to chat with your private PDF documents without your data ever leaving your machine. By decoupling the logic (FastAPI) from the interface (Streamlit), the system remains responsive even when handling heavy 30B parameter models.✨ FeaturesFully Local: No OpenAI API keys required. Your data stays on your hardware.Decoupled Architecture: FastAPI backend handles the heavy lifting; Streamlit provides a sleek UI.High-End LLM Support: Optimized for Qwen3-30B-A3B (AWQ 4-bit) for near-GPT-4 level reasoning locally.Vector Search: Powered by FAISS and Nomic-Embed-Text for lightning-fast document retrieval.Dockerized: One command to spin up the entire environment with GPU passthrough.💻 Hardware RequirementsTo run a 30B model comfortably:GPU: NVIDIA GPU with 24GB+ VRAM (e.g., RTX 3090, 4090, or A6000).RAM: 32GB+ System RAM.Drivers: NVIDIA Container Toolkit installed (for Docker GPU support).📂 Project StructurePlaintext.
+# 📄 Private-RAG: Local Document Intelligence
+### FastAPI + Streamlit + Qwen3-30B + Docker
+
+
+
+This project is a high-performance, **locally-hosted** Retrieval-Augmented Generation (RAG) pipeline. It allows you to chat with your private PDF documents without your data ever leaving your machine. By decoupling the logic (FastAPI) from the interface (Streamlit), the system remains responsive even when handling heavy 30B parameter models.
+
+---
+
+## ✨ Features
+* **Fully Local:** No OpenAI API keys required. Your data stays on your hardware.
+* **Decoupled Architecture:** FastAPI backend handles the heavy lifting; Streamlit provides a sleek UI.
+* **High-End LLM Support:** Optimized for **Qwen3-30B-A3B** (AWQ 4-bit) for near-GPT-4 level reasoning locally.
+* **Vector Search:** Powered by **FAISS** and **Nomic-Embed-Text** for lightning-fast document retrieval.
+* **Dockerized:** One command to spin up the entire environment with GPU passthrough.
+
+---
+
+## 💻 Hardware Requirements
+To run a **30B model** comfortably, you generally need:
+* **GPU:** NVIDIA GPU with **24GB+ VRAM** (e.g., RTX 3090, 4090, or A6000).
+* **RAM:** 32GB+ System RAM.
+* **Drivers:** [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed for Docker GPU support.
+
+---
+
+## 📂 Project Structure
+```text
+.
 ├── backend.py            # FastAPI Server (LLM & Vector Store logic)
 ├── frontend.py           # Streamlit Web Interface
 ├── requirements.txt      # Python dependencies
 ├── Dockerfile            # Container definition
 ├── docker-compose.yml    # Multi-container orchestration
 └── us_census/            # Directory for your PDF documents
-🚀 Quick Start (with Docker)Clone the RepositoryBashgit clone https://github.com/your-repo/local-rag.git
+
+
+🚀 Quick Start (with Docker)
+Clone the Repository
+git clone [https://github.com/your-repo/local-rag.git](https://github.com/your-repo/local-rag.git)
 cd local-rag
-Add Your DocumentsDrop your .pdf files into the us_census/ folder.Launch the StackBashdocker-compose up --build
-Access the AppFrontend (UI): http://localhost:8501Backend (API Docs): http://localhost:8000/docs🛠️ Configuration & APIEnvironment VariablesThe frontend communicates with the backend via the BACKEND_URL. This is automatically set in the docker-compose.yml but can be overridden:BACKEND_URL: http://backend:8000 (Default for Docker)API EndpointsMethodEndpointDescriptionPOST/ingestScans the PDF folder and rebuilds the FAISS index.POST/askTakes a JSON question and returns a RAG-based answer.⚠️ TroubleshootingGPU Not Found: Ensure you have the NVIDIA Container Toolkit installed on your host machine.Ollama Connection: If running Ollama on your host (outside Docker), ensure the backend is configured to point to http://host.docker.internal:11434.Slow Responses: If using a 30B model on lower VRAM, the system may offload to system RAM (CPU), which is significantly slower. Consider switching to a 7B or 14B model in backend.py.📜 LicenseMIT License. Use it, break it, build something cool.
+
+Add Your Documents
+Drop your .pdf files into the us_census/ folder.
+
+Launch the Stack
+docker-compose up --build
+
+Access the App
+
+Frontend (UI): http://localhost:8501
+
+Backend (API Docs): http://localhost:8000/docs
+
+Method,Endpoint,Description
+POST,/ingest,Scans the PDF folder and rebuilds the FAISS index.
+POST,/ask,Takes a JSON question and returns a RAG-based answer.
