@@ -1,0 +1,11 @@
+📄 Local-RAG: Document Q&A with Qwen3 & FastAPIWelcome to your private, local-first RAG (Retrieval-Augmented Generation) pipeline. This project splits the "brains" (FastAPI + LangChain) from the "beauty" (Streamlit) to give you a scalable way to chat with your PDF documents using high-end local LLMs.Note: Running a Qwen3-30B model is a bit of a flex. Ensure your GPU has enough VRAM (ideally 24GB+) to handle the 4-bit AWQ quantization smoothly.🏗️ The ArchitectureComponentTechnologyFrontendStreamlit (Interactive UI)API BackendFastAPI (Async Request Handling)OrchestrationLangChain (Chains & Document Loaders)Vector StoreFAISS (Local Vector Search)EmbeddingsNomic-Embed-Text (via Ollama)Local LLMQwen3-30B-A3B-Instruct (vLLM or Ollama compatible)🚀 Getting Started1. PrerequisitesPython 3.10+Ollama (Installed and added to your system PATH)The Models:Bashollama pull nomic-embed-text
+# Ensure your local LLM server is pointing to the Qwen3 AWQ model
+2. InstallationClone the repository and install the dependencies:Bashpip install fastapi uvicorn streamlit langchain langchain-openai langchain-community langchain-ollama pypdf faiss-cpu requests
+3. Folder StructureEnsure you have a directory for your PDFs:Plaintext.
+├── backend.py
+├── frontend.py
+├── us_census/        <-- Drop your PDFs here
+└── README.md
+🛠️ How to RunYou need to run two separate terminals for this to work (the "Decoupled Dance"):Step A: Start the BackendBashuvicorn backend:app --host 0.0.0.0 --port 8000 --reload
+The backend will automatically try to trigger ollama serve on startup.Step B: Start the FrontendBashstreamlit run frontend.py
+🕹️ Usage FlowIngest: Click the "Generate Embeddings" button in the Streamlit UI. This reads the ./us_census folder, chunks the text, and builds the FAISS index.Ask: Type your question in the text box.Retrieve: The backend finds relevant context and sends it to Qwen3.Read: Get your answer based only on your local data.⚠️ TroubleshootingPort Conflicts: If port 8000 is taken, change it in both backend.py and the BACKEND_URL in frontend.py.Ollama Connection: If you get a connection error, manually run ollama serve in a separate terminal before starting the backend.Memory Issues: If the 30B model is too heavy, swap the LOCAL_MODEL variable in backend.py to llama3:8b or qwen2.5:7b.
