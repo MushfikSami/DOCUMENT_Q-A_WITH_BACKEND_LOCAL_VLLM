@@ -1,0 +1,8 @@
+faiss-cpu 
+PyPDF2 
+langchain_classic 
+langchain_community 
+streamlit 
+python-dotenv
+openai 
+langchain_ollama 
